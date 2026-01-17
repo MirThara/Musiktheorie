@@ -25,8 +25,10 @@ export const cards = [
     },
     {
         id: "note-entry-1",
-        prompt: "Trage g' in das Notensystem ein",
         targetNote: "g''",
+        get prompt() {
+            return `Trage ${this.targetNote} in das Notensystem ein`;
+        },
         setup({ contentEl, setAnswer, setValid }) {
             const staff = createStaff({
                 key: "treble",
