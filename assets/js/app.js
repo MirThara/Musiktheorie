@@ -1,100 +1,71 @@
+import { cards } from "./cards.js";
+
+console.log("app.js geladen");
+
+
 const state = {
     view: "start",
     currentCard: 0,
-    selectedAnswer: null,
-    progress: {
-        completed: 0
-    }
+    currentAnswer: null
 };
 
-const cards = [
-    {
-        prompt: "Welche Taste ist ein C?",
-        answers: ["C", "D", "E"],
-        correct: "C",
-    },
-    {
-        prompt: "Wie viele Halbtöne hat eine große Terz?",
-        answers: ["3", "4", "5"],
-        correct: "4",
-    }
-];
+const startView = document.getElementById("start-view");
+const cardView = document.getElementById("card-view");
+const resultView = document.getElementById("result-view");
+
+const startBtn = document.getElementById("start-btn");
+const backBtn = document.getElementById("back-btn");
+const checkBtn = document.getElementById("check-btn");
+
+const contentEl = document.getElementById("card-content");
+const promptEl = document.getElementById("card-prompt");
 
 function showView(name) {
-    ["start", "card", "result"].forEach(v => {
-        document.getElementById(`${v}-view`).hidden = v !== name;
-    });
+    startView.hidden = name !== "start";
+    cardView.hidden = name !== "card";
+    resultView.hidden = name !== "result";
+    state.view = name;
 }
-
-function updateStart() {
-    const total = cards.length;
-    const done = state.progress.completed;
-
-    document.getElementById('progress-text')
-        .textContent = `${done} von ${total} Cards abgeschlossen`;
-
-    document.getElementById('progress-fill')
-        .style.width = `${(done / total) * 100}%`;
-}
-
 
 function loadCard() {
     const card = cards[state.currentCard];
 
-    document.getElementById('card-counter')
-        .textContent = `Card ${state.currentCard + 1} / ${cards.length}`;
+    promptEl.textContent = card.prompt;
+    contentEl.innerHTML = "";
+    checkBtn.disabled = true;
+    state.currentAnswer = null;
 
-    document.getElementById('card-prompt')
-        .textContent = card.prompt;
-
-    const container = document.getElementById('card-content');
-    container.innerHTML = "";
-
-    card.answers.forEach(answer => {
-        const btn = document.createElement('button');
-        btn.className = "answer";
-        btn.textContent = answer;
-
-        btn.onclick = () => {
-            state.selectedAnswer = answer;
-            document.querySelectorAll('.answer')
-                .forEach(b => b.classList.remove("selected"));
-            btn.classList.add("selected");
-            document.getElementById('check-btn').disabled = false;
+    card.setup({
+        contentEl,
+        setAnswer(answer) {
+            state.currentAnswer = answer;
+        },
+        setValid(isValid) {
+            checkBtn.disabled = !isValid;
         }
-
-        container.appendChild(btn);
     });
-
-    document.getElementById('check-btn').disabled = true;
 }
 
-document.getElementById('check-btn').onclick = () => {
-    const card = cards[state.currentCard];
-
-    if (state.selectedAnswer === card.correct) {
-        state.progress.completed++;
-        state.currentCard++;
-
-        if (state.currentCard >= cards.length) {
-            showView("result");
-        } else {
-            loadCard();
-        }
-    } else {
-        alert("Falsch, versuch es erneut");
-    }
-}
-
-document.getElementById('start-btn').onclick = () => {
+startBtn.onclick = () => {
     state.currentCard = 0;
     showView("card");
     loadCard();
 }
 
-document.getElementById('back-btn').onclick = () => {
-    showView("start");
-    updateStart();
+checkBtn.onclick = () => {
+    const card = cards[state.currentCard];
+
+    if (card.check(state.currentAnswer)) {
+        alert("Richtig");
+        state.currentCard++;
+        loadCard();
+    } else {
+        alert("Falsch")
+    }
 }
 
-updateStart();
+backBtn.onclick = () => {
+    showView("start");
+}
+
+showView("start");

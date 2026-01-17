@@ -101,3 +101,41 @@ button:disabled {
     opacity: .4;
     cursor: default;
 }
+
+.piano {
+    position: relative;
+    display: flex;
+    height: 180px;
+    margin: 24px 0;
+}
+
+.key {
+    position: relative;
+    bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.key.white {
+    width: 44px;
+    background: white;
+}
+
+.key.black {
+    width: 28px;
+    height: 110px;
+    background: #111;
+    margin-left: -14px;
+    margin-right: -14px;
+    z-index: 2;
+}
+
+.key .dot {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX((-50%));
+    width: 10px;
+    height: 10px;
+    background: #4f46e5;
+    border-radius: 50%
+}
