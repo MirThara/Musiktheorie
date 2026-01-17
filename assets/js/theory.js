@@ -1,0 +1,15 @@
+const INTERVALS = {
+    0: { name: "Prime", short: "P1" },
+    1: { name: "kleine Sekunde", short: "m2" },
+    2: { name: "große Sekunde", short: "M2" },
+    3: { name: "kleine Terz", short: "m3" },
+    4: { name: "große Terz", short: "M3" },
+    5: { name: "reine Quarte", short: "P4" },
+    6: { name: "übermäßige Quarte", short: "P4+" },
+    7: { name: "reine Quinte", short: "P5" },
+    8: { name: "kleine Sexte", short: "m6" },
+    9: { name: "große Sexte", short: "M6" },
+    10: { name: "kleine Septime", short: "m7" },
+    11: { name: "große Septime", short: "M7" },
+    12: { name: "Oktave", short: "P8" },
+}

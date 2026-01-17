@@ -5,10 +5,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Musiktheorie</title>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
+    <div id="app">
+        <section id="start-view">
+            <h1>Musiktheorie</h1>
 
+            <div class="progress-card">
+                <div class="progress-bar">
+                    <div id="progress-fill"></div>
+                </div>
+                <p id="progress-text"></p>
+            </div>
+
+            <button class="primary" id="start-btn">Weiterlernen</button>
+        </section>
+
+        <!-- CARD-VIEW -->
+        <section id="card-view">
+            <div class="card">
+                <p class="card-counter" id="card-counter"></p>
+                <h2 id="card-prompt"></h2>
+
+                <div id="card-content" class="answers"></div>
+
+                <button class="primary" id="check-btn" disabled>Überprüfen</button>
+            </div>
+        </section>
+
+        <!-- RESULT VIEW -->
+        <section id="result-view" hidden>
+            <h2>Einheit abgeschlossen</h2>
+            <button class="primary" id="back-btn">Zur Startseite</button>
+        </section>
+
+    </div>
+
+    <script src="assets/js/app.js"></script>
 </body>
 
 </html>
