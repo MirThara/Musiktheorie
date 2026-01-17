@@ -6,7 +6,8 @@ console.log("app.js geladen");
 const state = {
     view: "start",
     currentCard: 0,
-    currentAnswer: null
+    currentAnswer: null,
+    progress: 0,
 };
 
 const startView = document.getElementById("start-view");
@@ -19,6 +20,8 @@ const checkBtn = document.getElementById("check-btn");
 
 const contentEl = document.getElementById("card-content");
 const promptEl = document.getElementById("card-prompt");
+const progressText = document.getElementById("progress-text");
+const progressFill = document.getElementById("progress-fill");
 
 function showView(name) {
     startView.hidden = name !== "start";
@@ -27,7 +30,18 @@ function showView(name) {
     state.view = name;
 }
 
+function updateStart() {
+    progressText.textContent = `${state.progress} von ${cards.length} Cards abgeschlossen`;
+    progressFill.style.width = `${(state.progress / cards.length) * 100}%`;
+}
+
 function loadCard() {
+    if (state.currentCard >= cards.length) {
+        showView("start");
+        updateStart();
+        return;
+    }
+
     const card = cards[state.currentCard];
 
     promptEl.textContent = card.prompt;
@@ -58,6 +72,7 @@ checkBtn.onclick = () => {
     if (card.check(state.currentAnswer)) {
         alert("Richtig");
         state.currentCard++;
+        state.progress++;
         loadCard();
     } else {
         alert("Falsch")
@@ -66,6 +81,8 @@ checkBtn.onclick = () => {
 
 backBtn.onclick = () => {
     showView("start");
+    updateStart();
 }
 
 showView("start");
+updateStart();
