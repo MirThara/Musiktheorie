@@ -1,6 +1,7 @@
 import { createStaff } from "./ui/staff.js";
 import { createPiano } from "./ui/piano.js";
 import { createMC } from "./ui/mc.js";
+import { intervalToName } from "./utils/intervalMap.js";
 console.log("cards.js loaded");
 
 export let cards = [];
@@ -40,9 +41,10 @@ export async function loadCards(endpoint, token = null) {
 
     cards = data.map(item => {
         if (item.type === "piano") {
+            const intervalName = intervalToName(item.interval);
             return {
                 ...item,
-                prompt: `Markiere eine ${item.interval}.`,
+                prompt: `Markiere eine ${intervalName}.`,
                 setup({ contentEl, setAnswer, setValid }) {
                     const piano = createPiano({
                         onChange(selection) {
