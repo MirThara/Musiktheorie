@@ -1,4 +1,6 @@
 import { cards } from "./cards.js";
+import { shuffle } from "./utils/shuffle.js";
+let shuffledCards = shuffle(cards);
 
 console.log("app.js geladen");
 
@@ -42,7 +44,7 @@ function loadCard() {
         return;
     }
 
-    const card = cards[state.currentCard];
+    const card = shuffledCards[state.currentCard];
 
     promptEl.textContent = card.prompt;
     contentEl.innerHTML = "";
@@ -62,12 +64,14 @@ function loadCard() {
 
 startBtn.onclick = () => {
     state.currentCard = 0;
+    state.progress = 0;
+    shuffledCards = shuffle(cards);
     showView("card");
     loadCard();
 }
 
 checkBtn.onclick = () => {
-    const card = cards[state.currentCard];
+    const card = shuffledCards[state.currentCard];
 
     if (card.check(state.currentAnswer)) {
         alert("Richtig");

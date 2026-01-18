@@ -1,5 +1,3 @@
-import { createPiano } from "./ui/piano.js";
-import { createStaff } from "./ui/staff.js";
 import { createNoteEntryCard } from "./components/noteEntryCard.js";
 import { createIntervalEntryCard } from "./components/intervalEntryCard.js";
 import { createMultipleChoiceCard } from "./components/mcCard.js";
