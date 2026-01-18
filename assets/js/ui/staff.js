@@ -69,10 +69,10 @@ export function createStaff({ key = "treble", targetNote, showLedgerLines = fals
             "e": 80,
             "d": 90,
             "c": 100,
-            "H'": 110,
+            "H": 110,
             "A": 120,
-            "G'": 130,
-            "F'": 140
+            "G": 130,
+            "F": 140
         }
     };
     const noteMap = noteMaps[key] || noteMaps['treble'];
