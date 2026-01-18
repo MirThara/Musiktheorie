@@ -1,30 +1,24 @@
 import { shuffle } from "../utils/shuffle.js";
 export function createMC({ options, onChange }) {
-    const list = document.createElement("div");
-    list.className = "mc-list";
+    const el = document.createElement("div");
+    el.className = "mc-list";
 
-    let selected = null;
+    let selectedValue = null;
+    let shuffled = shuffle(options);
 
-    const shuffledOptions = shuffle(options);
-
-    shuffledOptions.forEach(option => {
+    shuffled.forEach(option => {
         const btn = document.createElement("button");
-        btn.className = "mc-option";
         btn.textContent = option;
+        btn.className = "mc-option";
 
         btn.onclick = () => {
-            // visuelle Auswahl
-            [...list.children].forEach(b => b.classList.remove("selected"));
+            [...el.children].forEach(b => b.classList.remove("selected"));
             btn.classList.add("selected");
 
-            selected = option;
-            setAnswer(option);
-            setValid(true);
+            selectedValue = option;
+            onChange(selectedValue);
         };
 
-        list.appendChild(btn);
-        if (onChange) onChange(null);
+        el.appendChild(btn);
     });
-
-    return list;
 }
