@@ -69,7 +69,7 @@ export function createStaff({ key = "treble", targetNote, showLedgerLines = fals
             "d": 90,
             "c": 100,
             "H'": 110,
-            "A'": 120,
+            "A": 120,
             "G'": 130,
             "F'": 140
         }

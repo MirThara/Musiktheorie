@@ -1,53 +1,19 @@
-import { createPiano } from "./components/piano.js";
-import { createStaff } from "./components/staff.js";
-import { createMC } from "./components/mc.js";
+import { createPiano } from "./ui/piano.js";
+import { createStaff } from "./ui/staff.js";
+import { createMC } from "./ui/mc.js";
+import { createNoteEntryCard } from "./components/noteEntryCard.js";
+import { createIntervalEntryCard } from "./components/intervalEntryCard.js";
 
 export const cards = [
-    {
+    createIntervalEntryCard({
         id: "interval-piano-1",
-        prompt: "Markiere eine große Terz",
-        type: "piano-interval",
-
-        setup({ contentEl, setAnswer, setValid }) {
-            const piano = createPiano({
-                onChange(selection) {
-                    setAnswer(selection);
-                    setValid(selection.length === 2);
-                }
-            });
-
-            contentEl.appendChild(piano);
-        },
-
-        check(answer) {
-            if (!Array.isArray(answer) || answer.length !== 2) return false;
-
-            const interval = Math.abs(answer[1] - answer[0]);
-            return interval === 4;
-        }
-    },
-    {
+        interval: 5,
+    }),
+    createNoteEntryCard({
         id: "note-entry-1",
-        targetNote: "g''",
-        get prompt() {
-            return `Trage ${this.targetNote} in das Notensystem ein`;
-        },
-        setup({ contentEl, setAnswer, setValid }) {
-            const staff = createStaff({
-                key: "treble",
-                targetNote: this.targetNote,
-                // showLedgerLines: true,
-                onChange(note) {
-                    setAnswer(note);
-                    setValid(note != null);
-                }
-            });
-            contentEl.appendChild(staff);
-        },
-        check(answer) {
-            return answer === this.targetNote;
-        }
-    },
+        key: "treble",
+        targetNote: "g'",
+    }),
     {
         id: "note-entry-2",
         targetNote: "A",

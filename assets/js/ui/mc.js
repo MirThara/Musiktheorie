@@ -1,3 +1,4 @@
+import { shuffle } from "../utils/shuffle.js";
 export function createMC({ options, onChange }) {
     const list = document.createElement("div");
     list.className = "mc-list";
