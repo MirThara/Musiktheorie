@@ -13,6 +13,9 @@
   },
   "build": {
     "appId": "de.mithara.musictheory",
+    "files": [
+      "**/*"
+    ],
     "mac": {
       "target": "dmg",
       "icon": "assets/icon.icns"
