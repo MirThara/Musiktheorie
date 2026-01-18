@@ -1,7 +1,7 @@
 import { shuffle } from "../utils/shuffle.js";
 export function createMC({ options, onChange }) {
     const el = document.createElement("div");
-    el.className = "mc-list";
+    el.className = "answers";
 
     let selectedValue = null;
     let shuffled = shuffle(options);
@@ -9,7 +9,7 @@ export function createMC({ options, onChange }) {
     shuffled.forEach(option => {
         const btn = document.createElement("button");
         btn.textContent = option;
-        btn.className = "mc-option";
+        btn.className = "answer";
 
         btn.onclick = () => {
             [...el.children].forEach(b => b.classList.remove("selected"));
