@@ -1,3 +1,4 @@
+console.log("ui/piano.js loaded");
 export function createPiano({ onChange }) {
     const piano = document.createElement("div");
     piano.className = "piano";

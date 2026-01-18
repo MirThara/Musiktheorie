@@ -1,4 +1,6 @@
 import { shuffle } from "../utils/shuffle.js";
+console.log("ui/mc.js loaded");
+
 export function createMC({ options, onChange }) {
     const el = document.createElement("div");
     el.className = "answers";

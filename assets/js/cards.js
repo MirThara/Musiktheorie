@@ -1,30 +1,103 @@
-import { createNoteEntryCard } from "./components/noteEntryCard.js";
-import { createIntervalEntryCard } from "./components/intervalEntryCard.js";
-import { createMultipleChoiceCard } from "./components/mcCard.js";
+import { createStaff } from "./ui/staff.js";
+import { createPiano } from "./ui/piano.js";
+import { createMC } from "./ui/mc.js";
+console.log("cards.js loaded");
 
-export const cards = [
-    createIntervalEntryCard({
-        id: "interval-piano-1",
-        interval: 5,
-    }),
-    createNoteEntryCard({
-        id: "note-entry-1",
-        key: "treble",
-        targetNote: "g'",
-    }),
-    createNoteEntryCard({
-        id: "note-entry-2",
-        key: "bass",
-        targetNote: "A",
-    }),
-    createIntervalEntryCard({
-        id: "interval-piano-2",
-        interval: 7,
-    }),
-    createMultipleChoiceCard({
-        id: "mc-1",
-        prompt: "Der Violinschlüssel heißt auch ...",
-        answers: ["G-Schlüssel", "F-Schlüssel", "C-Schlüssel"],
-        correct: "G-Schlüssel",
-    }),
-];
+export let cards = [];
+
+/**
+ * Lädt Cards dynamisch von Hygraph
+ * @param {string} endpoint
+ * @param {string} token
+ */
+
+export async function loadCards(endpoint, token = null) {
+    const query = `
+    query{
+        cards{
+            id
+            type
+            prompt
+            targetNote
+            key
+            interval
+            answers
+            correct
+        }
+    }
+`;
+    const headers = { "Content-Type": "application/json" };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+
+    const res = await (fetch(endpoint, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ query })
+    }));
+
+    const result = await res.json();
+    const data = result.data.cards;
+
+    cards = data.map(item => {
+        if (item.type === "piano") {
+            return {
+                ...item,
+                prompt: `Markiere eine ${item.interval}.`,
+                setup({ contentEl, setAnswer, setValid }) {
+                    const piano = createPiano({
+                        onChange(selection) {
+                            setAnswer(selection);
+                            setValid(selection.length === 2);
+                        }
+                    });
+                    contentEl.appendChild(piano);
+                },
+                check(answer) {
+                    return Math.abs(answer[1] - answer[0]) === item.interval;
+                }
+            };
+        } else if (item.type === "staff") {
+            return {
+                ...item,
+                prompt: `Trage ${item.targetNote} in das Notensystem ein.`,
+                setup({ contentEl, setAnswer, setValid }) {
+                    const staff = createStaff({
+                        key: item.key || "treble",
+                        targetNote: item.targetNote,
+                        showLedgerLines: false,
+                        onChange(note) {
+                            setAnswer(note);
+                            setValid(note != null);
+                        }
+                    });
+                    contentEl.appendChild(staff);
+                },
+                check(answer) {
+                    return answer === item.targetNote;
+                }
+            };
+        } else if (item.type === "mc") {
+            return {
+                ...item,
+                prompt: item.prompt,
+                setup({ contentEl, setAnswer, setValid }) {
+                    const mc = createMC({
+                        options: item.answers,
+                        onChange(selection) {
+                            setAnswer(selection);
+                            setValid(true);
+                        }
+                    })
+
+                    contentEl.appendChild(mc);
+                    setValid(false);
+                },
+                check(answer) {
+                    return answer === item.correct;
+                }
+            };
+        }
+        return null;
+    })
+        .filter(Boolean);
+}

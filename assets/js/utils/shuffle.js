@@ -1,3 +1,4 @@
+console.log("utils/shuffle.js loaded");
 export function shuffle(array) {
     return array
         .map(value => ({ value, sort: Math.random() }))

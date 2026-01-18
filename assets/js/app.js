@@ -1,9 +1,7 @@
-import { cards } from "./cards.js";
+import { cards, loadCards } from "./cards.js";
 import { shuffle } from "./utils/shuffle.js";
-let shuffledCards = shuffle(cards);
-
-console.log("app.js geladen");
-
+console.log("App.JS started");
+let shuffledCards = [];
 
 const state = {
     view: "start",
@@ -34,17 +32,17 @@ function showView(name) {
 
 function updateStart() {
     progressText.textContent = `${state.progress} von ${cards.length} Cards abgeschlossen`;
-    progressFill.style.width = `${(state.progress / cards.length) * 100}%`;
+    progressFill.style.width = `${cards.length ? (state.progress / cards.length) * 100 : 0}%`;
 }
 
 function loadCard() {
-    if (state.currentCard >= cards.length) {
+    const card = shuffledCards[state.currentCard];
+
+    if (!card) {
         showView("start");
         updateStart();
         return;
     }
-
-    const card = shuffledCards[state.currentCard];
 
     promptEl.textContent = card.prompt;
     contentEl.innerHTML = "";
@@ -88,5 +86,18 @@ backBtn.onclick = () => {
     updateStart();
 }
 
-showView("start");
-updateStart();
+(async function initApp() {
+    console.log("🚀 initApp läuft");
+    startBtn.disabled = true;
+    progressText.textContent = "Lade Inhalte...";
+
+    await loadCards("https://eu-west-2.cdn.hygraph.com/content/cmkgv5jtv002w07w2474gr2sf/master");
+
+    shuffledCards = shuffle(cards);
+
+    console.log(cards);
+
+    updateStart();
+    startBtn.disabled = false;
+    showView("start");
+})();

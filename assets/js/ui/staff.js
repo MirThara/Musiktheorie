@@ -1,3 +1,4 @@
+console.log("ui/staff.js loaded");
 export function createStaff({ key = "treble", targetNote, showLedgerLines = false, onChange }) {
     const staff = document.createElement('div');
     staff.className = "staff";
