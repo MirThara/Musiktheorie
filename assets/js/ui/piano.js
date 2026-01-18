@@ -16,6 +16,7 @@ export function createPiano({ onChange }) {
         { midi: 69, type: "white" },
         { midi: 70, type: "black" },
         { midi: 71, type: "white" },
+        { midi: 72, type: "white" },
     ];
 
     let selected = [];

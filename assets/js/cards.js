@@ -15,7 +15,7 @@ export let cards = [];
 export async function loadCards(endpoint, token = null) {
     const query = `
     query{
-        cards{
+        cards(first: 100){
             id
             type
             prompt
