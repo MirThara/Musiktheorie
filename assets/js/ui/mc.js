@@ -21,4 +21,5 @@ export function createMC({ options, onChange }) {
 
         el.appendChild(btn);
     });
+    return el;
 }
