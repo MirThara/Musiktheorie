@@ -22,6 +22,8 @@ const contentEl = document.getElementById("card-content");
 const promptEl = document.getElementById("card-prompt");
 const progressText = document.getElementById("progress-text");
 const progressFill = document.getElementById("progress-fill");
+const card_progressText = document.getElementById("card_progress-text");
+const card_progressFill = document.getElementById("card_progress-fill");
 
 function showView(name) {
     startView.hidden = name !== "start";
@@ -30,9 +32,14 @@ function showView(name) {
     state.view = name;
 }
 
-function updateStart() {
+function updateProgress() {
     progressText.textContent = `${state.progress} von ${cards.length} Cards abgeschlossen`;
     progressFill.style.width = `${cards.length ? (state.progress / cards.length) * 100 : 0}%`;
+}
+
+function updateCardProgress(){
+    card_progressText.textContent = `${state.progress} von ${cards.length} Cards abgeschlossen`;
+    card_progressFill.style.width = `${cards.length ? (state.progress / cards.length) * 100 : 0}%`;
 }
 
 function loadCard() {
@@ -40,7 +47,7 @@ function loadCard() {
 
     if (!card) {
         showView("start");
-        updateStart();
+        updateProgress();
         return;
     }
 
@@ -70,11 +77,12 @@ startBtn.onclick = () => {
 
 checkBtn.onclick = () => {
     const card = shuffledCards[state.currentCard];
-
+    
     if (card.check(state.currentAnswer)) {
         alert("Richtig");
         state.currentCard++;
         state.progress++;
+        updateCardProgress();
         loadCard();
     } else {
         alert("Falsch")
@@ -83,11 +91,10 @@ checkBtn.onclick = () => {
 
 backBtn.onclick = () => {
     showView("start");
-    updateStart();
+    updateProgress();
 }
 
 (async function initApp() {
-    console.log("🚀 initApp läuft");
     startBtn.disabled = true;
     progressText.textContent = "Lade Inhalte...";
 
@@ -97,7 +104,7 @@ backBtn.onclick = () => {
 
     console.log(cards);
 
-    updateStart();
+    updateProgress();
     startBtn.disabled = false;
     showView("start");
 })();
