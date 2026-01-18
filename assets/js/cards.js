@@ -75,7 +75,7 @@ export async function loadCards(endpoint, token = null) {
                     contentEl.appendChild(staff);
                 },
                 check(answer) {
-                    return answer === item.targetNote;
+                    return answer === (item.targetNote == "h'" ? "b'" : item.targetNote);
                 }
             };
         } else if (item.type === "mc") {
