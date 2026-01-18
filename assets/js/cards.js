@@ -1,5 +1,6 @@
 import { createPiano } from "./components/piano.js";
 import { createStaff } from "./components/staff.js";
+import { createMC } from "./components/mc.js";
 
 export const cards = [
     {
@@ -86,6 +87,29 @@ export const cards = [
 
             const interval = Math.abs(answer[1] - answer[0]);
             return interval === 5;
+        }
+    },
+    {
+        id: "mc-1",
+        prompt: "Der Violinschlüssel heißt auch ...",
+        options: [
+            "F-Schlüssel",
+            "G-Schlüssel",
+            "C-Schlüssel",
+        ],
+        correctAnswer: "G-Schlüssel",
+        setup({ contentEl, setAnswer, setValid }) {
+            const mc = createMC({
+                options: this.options,
+                onChange(selection) {
+                    setAnswer(selection);
+                    setValid(selection != null);
+                }
+            });
+            contentEl.appendChild(mc);
+        },
+        check(answer) {
+            return answer === this.correctAnswer;
         }
     }
 ];
