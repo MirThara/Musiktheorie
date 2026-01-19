@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "electron": "^40.0.0",
-    "electron-builder": "^26.4.0"
+    "electron-builder": "^23.0.6"
   },
   "build": {
     "appId": "de.mithara.musictheory",
@@ -24,5 +24,8 @@
       "target": "nsis",
       "icon": "assets/icon.ico"
     }
+  },
+  "dependencies": {
+    "@pwabuilder/cli": "^0.0.11"
   }
 }
